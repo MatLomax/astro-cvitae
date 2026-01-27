@@ -1,0 +1,168 @@
+---
+import "../styles/global.css";
+import { BulletList } from "../components/common/BulletList";
+import { ExternalLink } from "../components/common/ExternalLink";
+import { SkillLine } from "../components/common/SkillLine";
+import { EducationEntry } from "../components/entries/EducationEntry";
+import { ExperienceEntry } from "../components/entries/ExperienceEntry";
+import { GithubIcon } from "../components/icons/GithubIcon";
+import { Header } from "../components/layout/Header";
+import { Section } from "../components/layout/Section";
+import { ThemeSwitcher } from "../components/layout/ThemeSwitcher";
+import { cv } from "../data/cv";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Mathieu Lomax - CV</title>
+  </head>
+  
+  <body class="bg-(--page-bg) text-(--text-primary) font-body antialiased">
+    <ThemeSwitcher />
+
+    <main class="relative mx-auto w-full max-w-3xl space-y-10 px-7 pt-6 lg:pt-12 pb-6 min-h-screen flex flex-col print:min-h-full print:flex print:flex-col">
+      <Header {...cv.header} />
+      
+      <p
+        class="text-base leading-relaxed text-(--text-body)"
+        set:html={cv.summaryHtml}
+      />
+
+      <Section title="Experience">
+        <div class="space-y-6 flex flex-col">
+          {cv.experience.map((entry) => (
+            <ExperienceEntry entry={entry} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Personal Projects">
+        <BulletList items={cv.personalProjects} />
+      </Section>
+
+      <Section title="Education">
+        <div class="space-y-6">
+          {cv.education.map((entry) => (
+            <EducationEntry entry={entry} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Professional Skills">
+        <div class="space-y-2">
+          <SkillLine value={cv.professionalSkills.citizenship} />
+          <SkillLine label="Languages:" value={cv.professionalSkills.languages} />
+          <SkillLine label="Software:" value={cv.professionalSkills.software} />
+          <SkillLine value={cv.professionalSkills.associations} />
+          <SkillLine value={cv.professionalSkills.certifications} />
+        </div>
+      </Section>
+
+      <Section title="References">
+        <p class="text-sm leading-relaxed text-(--text-body)">{cv.references}</p>
+      </Section>
+
+      <div id="built-with-footer" class="text-xs text-(--text-subtle) text-center flex items-center justify-center gap-2 mt-auto">
+        <span>
+          Built with{" "}
+          <ExternalLink href="https://astro.build">Astro</ExternalLink> 
+          {" & "}
+          <ExternalLink href="https://tailwindcss.com">Tailwind CSS</ExternalLink>
+        </span>
+
+        <span>&middot;</span>
+
+        <ExternalLink
+          href={`https://github.com/${cv.header.github}/astro-cvitae`}
+          className="flex items-center gap-1"
+        >
+          <span>View source code</span>
+          <GithubIcon className="size-4" />
+        </ExternalLink>
+      </div>
+    </main>
+  </body>
+</html>
+
+<script>
+  const root = document.documentElement;
+  const buttons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")
+  );
+
+  const applyTheme = (theme?: string | null) => {
+    if (!theme || theme === "system") {
+      root.removeAttribute("data-theme");
+    } else {
+      root.setAttribute("data-theme", theme);
+    }
+
+    buttons.forEach((button) => {
+      const isSystem = !theme || theme === "system";
+      const shouldBeActive = isSystem
+        ? button.dataset.themeToggle === "system"
+        : button.dataset.themeToggle === theme;
+      button.dataset.active = String(shouldBeActive);
+    });
+  };
+
+  const getClickPosition = (event: MouseEvent, target: HTMLElement) => {
+    if (Number.isFinite(event.clientX) && Number.isFinite(event.clientY)) {
+      return { x: event.clientX, y: event.clientY };
+    }
+
+    const rect = target.getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  };
+
+  const setThemeWithReveal = (
+    nextTheme: string,
+    event: MouseEvent,
+    target: HTMLElement
+  ) => {
+    const { x, y } = getClickPosition(event, target);
+    const maxX = Math.max(x, window.innerWidth - x);
+    const maxY = Math.max(y, window.innerHeight - y);
+    const radius = Math.hypot(maxX, maxY);
+
+    root.style.setProperty("--theme-transition-x", `${x}px`);
+    root.style.setProperty("--theme-transition-y", `${y}px`);
+    root.style.setProperty("--theme-transition-radius", `${radius}px`);
+
+    if (
+      !("startViewTransition" in document) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      applyTheme(nextTheme);
+      return;
+    }
+
+    // @ts-ignore - View Transitions API not in TS lib yet.
+    document.startViewTransition(() => {
+      applyTheme(nextTheme);
+    });
+  };
+
+  const storedTheme = localStorage.getItem("cv-theme");
+  if (storedTheme && storedTheme !== "print") {
+    applyTheme(storedTheme);
+  } else {
+    applyTheme(root.getAttribute("data-theme"));
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const nextTheme = button.dataset.themeToggle ?? "system";
+      if (nextTheme === "system") {
+        localStorage.removeItem("cv-theme");
+      } else {
+        localStorage.setItem("cv-theme", nextTheme);
+      }
+      setThemeWithReveal(nextTheme, event, button);
+    });
+  });
+</script>

@@ -1,0 +1,212 @@
+@import "tailwindcss";
+@import "@fontsource/source-sans-3/400.css";
+@import "@fontsource/source-sans-3/500.css";
+@import "@fontsource/source-sans-3/600.css";
+@import "@fontsource/manrope/400.css";
+@import "@fontsource/manrope/500.css";
+@import "@fontsource/manrope/600.css";
+
+html {
+  font-size: var(--font-size);
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+@layer utilities {
+  .font-header {
+    font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .font-body {
+    font-family:
+      "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .arrow-inline {
+    display: inline-block;
+    transform: translateY(-0.09em);
+  }
+}
+
+@layer base {
+  :root {
+    --font-size: 18px;
+    --spacing: 4px;
+
+    --light-page-bg: #f8fafc;
+    --light-page-bg-muted: #ffffff;
+    --light-text-primary: #0f172a;
+    --light-text-strong: #1e293b;
+    --light-text-body: #334155;
+    --light-text-muted: #475569;
+    --light-text-subtle: #64748b;
+    --light-border-subtle: #d7dee8;
+    --light-border-muted: #e8eef3;
+    --light-list-marker: #94a3b8;
+    --light-link-underline: #cbd5e1;
+    --light-link-underline-hover: #94a3b8;
+    --light-link-hover: #0f172a;
+    --light-tab-bg: #ffffff;
+    --light-tab-bg-active: #64748b;
+    --light-tab-text: #1e293b;
+    --light-tab-text-active: #ffffff;
+
+    --dark-page-bg: #1c1917;
+    --dark-page-bg-muted: #272422;
+    --dark-text-primary: #e3e1df;
+    --dark-text-strong: #f5f4f2;
+    --dark-text-body: #d0ccc9;
+    --dark-text-muted: #a8a29e;
+    --dark-text-subtle: #8a837f;
+    --dark-border-subtle: #272422;
+    --dark-border-muted: #3a3532;
+    --dark-list-marker: #8a837f;
+    --dark-link-underline: #3a3532;
+    --dark-link-underline-hover: #4a443f;
+    --dark-link-hover: #f5f4f2;
+    --dark-tab-bg: #0f172a;
+    --dark-tab-bg-active: #8a837f;
+    --dark-tab-text: #e3e1df;
+    --dark-tab-text-active: #1c1917;
+
+    --page-bg: var(--light-page-bg);
+    --page-bg-muted: var(--light-page-bg-muted);
+    --text-primary: var(--light-text-primary);
+    --text-strong: var(--light-text-strong);
+    --text-body: var(--light-text-body);
+    --text-muted: var(--light-text-muted);
+    --text-subtle: var(--light-text-subtle);
+    --border-subtle: var(--light-border-subtle);
+    --border-muted: var(--light-border-muted);
+    --list-marker: var(--light-list-marker);
+    --link-underline: var(--light-link-underline);
+    --link-underline-hover: var(--light-link-underline-hover);
+    --link-hover: var(--light-link-hover);
+    --tab-bg: var(--light-tab-bg);
+    --tab-bg-active: var(--light-tab-bg-active);
+    --tab-text: var(--light-tab-text);
+    --tab-text-active: var(--light-tab-text-active);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --page-bg: var(--dark-page-bg);
+      --page-bg-muted: var(--dark-page-bg-muted);
+      --text-primary: var(--dark-text-primary);
+      --text-strong: var(--dark-text-strong);
+      --text-body: var(--dark-text-body);
+      --text-muted: var(--dark-text-muted);
+      --text-subtle: var(--dark-text-subtle);
+      --border-subtle: var(--dark-border-subtle);
+      --border-muted: var(--dark-border-muted);
+      --list-marker: var(--dark-list-marker);
+      --link-underline: var(--dark-link-underline);
+      --link-underline-hover: var(--dark-link-underline-hover);
+      --link-hover: var(--dark-link-hover);
+      --tab-bg: var(--dark-tab-bg);
+      --tab-bg-active: var(--dark-tab-bg-active);
+      --tab-text: var(--dark-tab-text);
+      --tab-text-active: var(--dark-tab-text-active);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --page-bg: var(--dark-page-bg);
+    --page-bg-muted: var(--dark-page-bg-muted);
+    --text-primary: var(--dark-text-primary);
+    --text-strong: var(--dark-text-strong);
+    --text-body: var(--dark-text-body);
+    --text-muted: var(--dark-text-muted);
+    --text-subtle: var(--dark-text-subtle);
+    --border-subtle: var(--dark-border-subtle);
+    --border-muted: var(--dark-border-muted);
+    --list-marker: var(--dark-list-marker);
+    --link-underline: var(--dark-link-underline);
+    --link-underline-hover: var(--dark-link-underline-hover);
+    --link-hover: var(--dark-link-hover);
+    --tab-bg: var(--dark-tab-bg);
+    --tab-bg-active: var(--dark-tab-bg-active);
+    --tab-text: var(--dark-tab-text);
+    --tab-text-active: var(--dark-tab-text-active);
+  }
+
+  @media print {
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body.pdf-export .list-disc {
+      margin-left: 0.5rem;
+    }
+
+    :root,
+    :root[data-theme] {
+      --font-size: 15px;
+      --spacing: 2.5px;
+
+      --page-bg: #ffffff;
+      --page-bg-muted: var(--light-page-bg-muted);
+      --text-primary: var(--light-text-primary);
+      --text-strong: var(--light-text-strong);
+      --text-body: var(--light-text-body);
+      --text-muted: var(--light-text-muted);
+      --text-subtle: var(--light-text-subtle);
+      --border-subtle: var(--light-border-subtle);
+      --border-muted: var(--light-border-muted);
+      --list-marker: var(--light-list-marker);
+      --link-underline: var(--light-link-underline);
+      --link-underline-hover: var(--light-link-underline-hover);
+      --link-hover: var(--light-link-hover);
+      --tab-bg: var(--light-tab-bg);
+      --tab-bg-active: var(--light-tab-bg-active);
+      --tab-text: var(--light-tab-text);
+      --tab-text-active: var(--light-tab-text-active);
+    }
+  }
+}
+
+@supports (view-transition-name: none) {
+  :root {
+    view-transition-name: root;
+  }
+
+  ::view-transition-old(root) {
+    animation: none;
+  }
+
+  ::view-transition-new(root) {
+    animation: theme-reveal 500ms linear both;
+    clip-path: circle(
+      0px at var(--theme-transition-x) var(--theme-transition-y)
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) {
+    animation: none;
+    clip-path: none;
+  }
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(
+      0px at var(--theme-transition-x) var(--theme-transition-y)
+    );
+  }
+  to {
+    clip-path: circle(
+      var(--theme-transition-radius) at var(--theme-transition-x)
+        var(--theme-transition-y)
+    );
+  }
+}
