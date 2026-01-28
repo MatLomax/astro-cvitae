@@ -67,11 +67,18 @@ import { cv } from "../data/cv";
       </Section>
 
       <div id="built-with-footer" class="text-xs text-(--text-subtle) text-center flex items-center justify-center gap-2 mt-auto">
-        <span>
+        <span class="print:hidden">
           Built with{" "}
           <ExternalLink href="https://astro.build">Astro</ExternalLink> 
           {" & "}
-          <ExternalLink href="https://tailwindcss.com">Tailwind CSS</ExternalLink>
+          <ExternalLink href="https://tailwindcss.com">Tailwind</ExternalLink>
+        </span>
+        
+        <span class="print:block hidden">
+          Built with{" "}
+          <ExternalLink href="https://astro.build">Astro</ExternalLink>,
+          <ExternalLink href="https://tailwindcss.com">Tailwind</ExternalLink> &
+          <ExternalLink href="https://www.playwright.dev">Playwright</ExternalLink>
         </span>
 
         <span>&middot;</span>
