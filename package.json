@@ -2,7 +2,7 @@
   "name": "astro-cvitae",
   "type": "module",
   "version": "1.0.0",
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.28.2",
   "description": "A modern, responsive CV built with Astro and Tailwind CSS",
   "author": "Mathieu Lomax",
   "license": "MIT",
