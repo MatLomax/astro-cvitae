@@ -41,6 +41,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Quality gates: a failure here blocks the deploy instead of shipping it.
+      - name: Lint and format check
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm check
+
       - name: Build site
         run: pnpm build
 
