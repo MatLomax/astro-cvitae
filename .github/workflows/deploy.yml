@@ -1,42 +1,59 @@
-name: Deploy to GitHub Pages
+name: Deploy CV to matlomax.github.io
 
+# Builds the Astro site here (astro-cvitae) and publishes the static output to the
+# user-site repo MatLomax/matlomax.github.io, which serves it at the root domain
+# https://matlomax.github.io/ via "Deploy from a branch" (gh-pages, /).
+#
+# Cross-repo push uses an SSH deploy key:
+#   - public  key = write-access deploy key on MatLomax/matlomax.github.io
+#   - private key = DEPLOY_KEY secret in this repo
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   push:
-    branches: [ main ]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
+    branches: [main]
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
+# The deploy key (not GITHUB_TOKEN) authorizes the cross-repo push, so we only
+# need read access to check out this repo.
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
+# Avoid overlapping deploys racing to publish to the external repo.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout astro-cvitae
         uses: actions/checkout@v5
-      - name: Install, build, and upload your site
-        uses: withastro/action@v5
-        # with:
-          # path: . # The root location of your Astro project inside the repository. (optional)
-          # node-version: 24 # The specific version of Node that should be used to build your site. Defaults to 22. (optional)
-          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
-          # build-cmd: pnpm run build # The command to run to build your site. Runs the package build script/task by default. (optional)
-        # env:
-          # PUBLIC_POKEAPI: 'https://pokeapi.co/api/v2' # Use single quotation marks for the variable value. (optional)
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Publish to matlomax.github.io
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          external_repository: MatLomax/matlomax.github.io
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          # Keep the deploy branch as a single rolling commit so build artifacts
+          # never accumulate in the user-site repo's history.
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "Deploy astro-cvitae@${{ github.sha }}"
