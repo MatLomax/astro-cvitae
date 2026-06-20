@@ -1,14 +1,14 @@
 ---
 import "../styles/global.css";
-import { BulletList } from "../components/common/BulletList";
-import { ExternalLink } from "../components/common/ExternalLink";
-import { SkillLine } from "../components/common/SkillLine";
-import { EducationEntry } from "../components/entries/EducationEntry";
-import { ExperienceEntry } from "../components/entries/ExperienceEntry";
-import { GithubIcon } from "../components/icons/GithubIcon";
-import { Header } from "../components/layout/Header";
-import { Section } from "../components/layout/Section";
-import { ThemeSwitcher } from "../components/layout/ThemeSwitcher";
+import BulletList from "../components/common/BulletList.astro";
+import ExternalLink from "../components/common/ExternalLink.astro";
+import SkillLine from "../components/common/SkillLine.astro";
+import EducationEntry from "../components/entries/EducationEntry.astro";
+import ExperienceEntry from "../components/entries/ExperienceEntry.astro";
+import GithubIcon from "../components/icons/GithubIcon.astro";
+import Header from "../components/layout/Header.astro";
+import Section from "../components/layout/Section.astro";
+import ThemeSwitcher from "../components/layout/ThemeSwitcher.astro";
 import { cv } from "../data/cv";
 ---
 
@@ -85,10 +85,10 @@ import { cv } from "../data/cv";
 
         <ExternalLink
           href={`https://github.com/${cv.header.github}/astro-cvitae`}
-          className="flex items-center gap-1"
+          class="flex items-center gap-1"
         >
           <span>View source code</span>
-          <GithubIcon className="size-4" />
+          <GithubIcon class="size-4" />
         </ExternalLink>
       </div>
     </main>

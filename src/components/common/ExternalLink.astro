@@ -1,0 +1,17 @@
+---
+import { cn } from "../../lib/cn";
+
+type Props = astroHTML.JSX.AnchorHTMLAttributes;
+
+const { class: className, ...rest } = Astro.props;
+---
+<a
+  {...rest}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={cn(
+    "text-(--text-muted) hover:text-(--link-hover)",
+    "underline decoration-(--link-underline) underline-offset-2 hover:decoration-(--link-underline-hover)",
+    className,
+  )}
+><slot /></a>

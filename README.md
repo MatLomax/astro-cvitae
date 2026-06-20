@@ -1,8 +1,8 @@
 # CV
 
-Personal CV/resume website built with Astro, React, TypeScript, and Tailwind CSS.
-Astro pages and React/TSX components keep the UI modular, while Tailwind and a
-small set of global styles deliver a clean, print-friendly layout.
+Personal CV/resume website built with Astro, TypeScript, and Tailwind CSS.
+Astro components keep the UI modular, while Tailwind and a small set of global
+styles deliver a clean, print-friendly layout.
 
 Content lives in typed data structures and renders consistently for web and PDF.
 The build pipeline supports local development and a PDF export flow for sharing
@@ -10,8 +10,7 @@ a printable version.
 
 ## Tech Stack
 
-- Astro for static site generation, routing, and builds
-- React for component-based UI in TSX
+- Astro for static site generation, routing, components, and builds
 - TypeScript for type-safe data and component props
 - Tailwind CSS (via Vite integration) for utility-first styling
 - @fontsource (Manrope, Source Sans 3) for self-hosted fonts

@@ -1,0 +1,18 @@
+---
+interface Props {
+  label?: string;
+  value: string;
+}
+
+const { label, value } = Astro.props;
+---
+<p class="text-sm text-(--text-body)">
+  {label ? (
+    <Fragment>
+      <span class="font-semibold text-(--text-strong)">{label}</span>{" "}
+      {value}
+    </Fragment>
+  ) : (
+    value
+  )}
+</p>

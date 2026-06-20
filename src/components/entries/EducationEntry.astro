@@ -1,0 +1,32 @@
+---
+import type { CvEducation } from "../../data/cv.types";
+import DateRange from "../common/DateRange.astro";
+import Skills from "../common/Skills.astro";
+
+interface Props {
+  entry: CvEducation;
+}
+
+const { entry } = Astro.props;
+---
+<div class="space-y-2 first:pt-2 not-last:border-b border-(--border-muted) not-last:pb-6 border-dashed">
+  <div class="flex flex-col print:flex-row md:flex-row flex-wrap md:justify-between print:justify-between gap-2">
+    <h3 class="text-base font-semibold text-(--text-primary) font-header">
+      {entry.school}
+    </h3>
+
+    <DateRange>{entry.dates}</DateRange>
+  </div>
+
+  <div class="flex flex-col gap-2 text-sm text-(--text-body) leading-relaxed">
+    <span class="font-medium text-(--text-strong) font-header">
+      {entry.program}
+    </span>
+
+    {entry.details && (
+      <span class="text-(--text-muted) italic">{entry.details}</span>
+    )}
+
+    {entry.modules && <Skills value={entry.modules} />}
+  </div>
+</div>

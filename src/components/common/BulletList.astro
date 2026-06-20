@@ -1,0 +1,56 @@
+---
+import type {
+  CvBullet,
+  CvPersonalProject,
+  CvTextWithSkills,
+} from "../../data/cv.types";
+import ExternalLink from "./ExternalLink.astro";
+import Skills from "./Skills.astro";
+
+interface Props {
+  items: CvBullet[];
+}
+
+const { items } = Astro.props;
+
+function isTextWithSkills(item: unknown): item is CvTextWithSkills {
+  return typeof item === "object" && item !== null && "text" in item;
+}
+
+function isPersonalProject(item: unknown): item is CvPersonalProject {
+  return typeof item === "object" && item !== null && "name" in item;
+}
+
+function formatDescription(description: string, hasSkills: boolean) {
+  return hasSkills ? description.replace(/\.\s*$/, "") : description;
+}
+---
+<ul class="list-disc space-y-2 pl-5 text-sm text-(--text-body) leading-relaxed print:leading-normal marker:text-(--list-marker)">
+  {items.map((item) => {
+    if (isTextWithSkills(item)) {
+      return (
+        <li class="break-inside-avoid-page">
+          {item.text.replace(/\.\s*$/, "")}{" "}<Skills prefix="–" value={item.skills} />
+        </li>
+      );
+    }
+
+    if (isPersonalProject(item)) {
+      return (
+        <li class="break-inside-avoid-page">
+          {item.href ? (
+            <ExternalLink href={item.href}>{item.name}</ExternalLink>
+          ) : (
+            item.name
+          )}{" "}
+          {item.description
+            ? formatDescription(item.description, Boolean(item.skills))
+            : null}{" "}
+          {item.skills ? <Skills prefix="–" value={item.skills} /> : null}
+        </li>
+      );
+    }
+
+    return <li class="break-inside-avoid-page">{item}</li>;
+  })}
+</ul>
